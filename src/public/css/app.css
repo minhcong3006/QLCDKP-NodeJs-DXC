@@ -1,3 +1,19 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  background-color: #ececfc;
+  font-size: 0.95em;
+  color: #222; }
+
+.user-avata {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; }
+
+.mt-10 {
+  margin-top: 100px; }
+
 ul {
   padding: 0;
   margin: 0; }
@@ -57,8 +73,9 @@ a {
 .go_top span {
   display: inline-block; }
 
-.footer-big {
-  padding: 105px 0 65px 0; }
+.image-home {
+  width: 100%;
+  height: 200px; }
 
 .footer-big .footer-widget {
   margin-bottom: 40px; }
@@ -134,3 +151,57 @@ a {
 @media (max-width: 991px) {
   .footer-menu {
     padding-left: 0; } }
+
+.form-control:focus {
+  color: #000;
+  background-color: #fff;
+  border: 2px solid #E8D426;
+  outline: 0;
+  box-shadow: none; }
+
+.form-control {
+  background-color: #f8f9fa;
+  padding: 20px;
+  padding: 25px 15px;
+  margin-bottom: 1.3rem; }
+
+.form-control:focus {
+  color: #000000;
+  background-color: #ffffff;
+  border: 3px solid #da5767;
+  outline: 0;
+  box-shadow: none; }
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  background: #da5767;
+  border: 2px solid #da5767; }
+
+.btn-primary:hover {
+  background-color: #df8c96;
+  border-color: #df8c96;
+  transition: .3s; }
+
+.card {
+  border: 1px solid var(#b3b3ff);
+  margin-bottom: 20px;
+  transition: border 0.1s, transform 0.3s; }
+
+.card:hover {
+  border: 1px solid var(#1a1aff);
+  -webkit-transform: translateY(-10px);
+  transform: translateY(-10px);
+  cursor: pointer; }
+
+.card .card-body h2 {
+  color: var(#1a1aff); }
+
+.card img:hover {
+  opacity: 0.6; }
+
+.card-p {
+  color: var(.card-p color-three); }
+
+.card-p i {
+  color: var(#1a1aff);
+  margin-right: 8px; }

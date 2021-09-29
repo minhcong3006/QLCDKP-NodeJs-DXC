@@ -1,0 +1,90 @@
+{{>header}}
+<div class="mt-10">
+    <h3>Cư dân trong khu phố</h3>
+    <table class="table table-striped mt-4 border border-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên chủ hộ</th>
+                <th scope="col">Địa chỉ</th>
+                <th scope="col">Số điện thoại</th>
+                <th scope="col">Cư trú</th>
+                <th scope="col">Vaccine</th>
+                <th scope="col">Thời gian tạo</th>
+                <th scope="col">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each residents}}
+            <tr>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.owner}}</td>
+                <td>{{this.address}}</td>
+                <td>{{this.phone}}</td>
+                <td>{{this.resident}}</td>
+                <td>{{this.vaccine}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <a href="/resident/{{this._id}}/edit" class="btn btn-primary">Sửa</a>
+                    <a href="" class="btn btn-primary" data-id="{{this._id}}" data-toggle="modal" data-target="#delete-resident-modal">Xóa</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+
+{{!-- confirm --}}
+<div id="delete-resident-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa cư dân?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn chắc chắn muốn xóa cư dân này?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Hủy</button>
+                <button id="btn-delete-resident" type="button" class="btn btn-secondary" data-dismiss="modal">Xóa bỏ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- delete-hide-form --}}
+
+<form method='POST' name="delete-resident-form">
+</form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+
+        var residentId;
+        var deleteForm = document.forms['delete-resident-form'];
+        var btnDeleteResident = document.getElementById('btn-delete-resident');
+
+
+        $('#delete-resident-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            residentId = button.data('id');
+        })
+        btnDeleteResident.onclick = function(){
+            deleteForm.action = '/resident/' + residentId + '?_method=DELETE';
+            deleteForm.submit();
+        }
+    })
+</script>
+
+
+
+
+
+
+{{>footer}}
+
