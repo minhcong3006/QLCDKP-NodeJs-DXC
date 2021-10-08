@@ -4,17 +4,20 @@
         {{#each residents}}
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
             <div class="card shadow ">
-                <img src="{{this.image}}" class="card-img-top image-home"
-                    alt="{{this.owner}}">
+                <a href="/resident/{{this._id}}">
+                    <img src="{{this.image}}" class="card-img-top image-home" alt="{{this.owner}}">
+                </a>
                 <div class="card-body">
-                    <h2 class="card-title">{{this.owner}}</h2>
-                    <p class="card-text">{{this.address}}</p>
-                    <p class="card-text">{{this.phone}}</p>
+                    <a href="/resident/{{this._id}}">
+                        <h3 class="card-title">{{this.owner}}</h3>
+                    </a>
+                    <p class="card-text"><b>Địa chỉ:</b> {{this.address}}</p>
+                    
                 </div>
                 <div class="card-body card-p">
                     <div class="row">
                         <div class="col col-xs-4 ">
-                            <i class="far fa-comments"></i> {{this.resident}}
+                            <i class="far fa-comments"></i> {{this.resident}} 
                         </div>
                         <div class="col col-xs-4 ">
                             <i class="far fa-user"></i> {{this.totalPeople}}

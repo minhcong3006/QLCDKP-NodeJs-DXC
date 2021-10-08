@@ -1,41 +1,34 @@
 {{>header}}
-<form action="/resident/handle-form-actions" name="container-form" method="POST" class="mt-5">
+<form action="/resident/handle-delete-form-actions" name="container-form" method="POST"  class="mt-5">
     <div>
-        <h3>Cư dân trong khu phố</h3>
-        {{!-- {{#if deleteCount}} --}}
-        <a class="fa fa-trash icon-trash"  aria-hidden="true" href="/me/trash/residents"> ({{deleteCount}})</a>
-        {{!-- {{/if}} --}}
+        <a href="/me/stored/residents">Quay lại danh sách quản lý cư dân</a>
+        <h3>Danh sách cư dân đã xóa</h3>
     </div>
-
     <div class="mt-2 d-flex align-items-center">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
-            <label class="form-check-label" for="checkbox-all">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox-trash-all">
+            <label class="form-check-label" for="checkbox-trash-all">
                 Chọn tất cả
             </label>
         </div>
         <select class="form-control form-control-sm select-custom" name="action" required>
             <option selected="selected">-- Chọn hành động --</option>
-            <option value="delete">Xóa</option>
+            <option value="restore">Khôi phục</option>
+            <option value="delete">Xóa vĩnh viễn</option>
         </select>
         <button class="btn btn-primary btn-sm check-all-submit-btn" disabled>Thực hiện</button>
-        <a href="/resident/create" class="btn btn-primary btn-create">Thêm cư dân</a>
     </div>
     <table class="table table-striped mt-4 border border-dark">
         <thead>
-            <tr class="tr-color">
+            <tr  class="tr-color">
                 <th scope="col"></th>
                 <th scope="col">#</th>
-                <th scope="col">
-                    Tên chủ hộ
-                    {{!-- {{{sortable 'owner' _sort}}} --}}
-                </th>
-                <th scope="col">Địa chỉ
-                </th>
+                <th scope="col">Tên chủ hộ</th>
+                <th scope="col">Địa chỉ</th>
                 <th scope="col">Số điện thoại</th>
                 <th scope="col">Cư trú</th>
                 <th scope="col">Vaccine</th>
-                <th scope="col">Thời gian tạo</th>
+                <th scope="col">Thời gian xóa</th>
                 <th scope="col">Hành động</th>
             </tr>
         </thead>
@@ -53,17 +46,17 @@
                 <td>{{this.phone}}</td>
                 <td>{{this.resident}}</td>
                 <td>{{this.vaccine}}</td>
-                <td>{{this.createdAt}}</td>
+                <td>{{this.deletedAt}}</td>
                 <td>
-                    <a href="/resident/{{this._id}}/edit" class="btn btn-link">Sửa</a>
-                    <a href="" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal" data-target="#delete-resident-modal">Xóa</a>
+                    <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}">Khôi phục</a>
+                    <a href="" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal" data-target="#delete-resident-modal">Xóa vĩnh viễn</a>
                 </td>
             </tr>
             {{else}}
             <tr>
                 <td colspan="8" class="text-center">
-                    Bạn chưa thêm cư dân nào.
-                     <a href="/resident/create">Thêm cư dân</a>
+                    Thùng rác trống
+                     <a href="/me/stored/residents">Danh sách cư dân</a>
                 </td>
             </tr>
             {{/each}}
@@ -83,11 +76,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Bạn chắc chắn muốn xóa cư dân này?</p>
+                <p>Hành động này không thể khôi phục. Bạn chắc chắn muốn xóa cư dân này?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Hủy</button>
-                <button id="btn-delete-resident" type="button" class="btn btn-secondary" data-dismiss="modal">Xóa bỏ</button>
+                <button id="btn-delete-resident" type="button" class="btn btn-secondary" data-dismiss="modal">Xóa vĩnh viễn</button>
             </div>
         </div>
     </div>
@@ -96,6 +89,7 @@
 {{!-- delete-hide-form --}}
 
 <form method='POST' name="delete-resident-form"></form>
+<form method='POST' name="restore-resident-form"></form>
 
 
 <script>
@@ -103,25 +97,33 @@
 
         var residentId;
         var deleteForm = document.forms['delete-resident-form'];
+        var restoreForm = document.forms['restore-resident-form'];
         var btnDeleteResident = document.getElementById('btn-delete-resident');
-        var containerForm = document.forms['container-form']; /// lấy form
-        var checkboxAll = $('#checkbox-all');
+        var restoreBtn = $('.btn-restore');
+        var checkboxAll = $('#checkbox-trash-all');
         var residentItemCheckbox = $('input[name="residentIds[]"]');
         var checkAllSubmitBtn = $('.check-all-submit-btn');
-
 
         $('#delete-resident-modal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             residentId = button.data('id');
-        });
+        })
+
         btnDeleteResident.onclick = function(){
-            deleteForm.action = '/resident/' + residentId + '?_method=DELETE';
+            deleteForm.action = '/resident/' + residentId + '/force?_method=DELETE';
             deleteForm.submit();
-        };
+        }
+
+        restoreBtn.click(function (e) {
+            e.preventDefault();
+            var residentId = $(this).data('id');
+            restoreForm.action = '/resident/' + residentId + '/restore?_method=PATCH';
+            restoreForm.submit();
+        });
         checkboxAll.change(function () {
             var isCheckedAll = $(this).prop('checked');
             residentItemCheckbox.prop('checked', isCheckedAll);
-             renderCheckAllSubmitBtn();
+            renderCheckAllSubmitBtn();
         });
 
         residentItemCheckbox.change(function () {
@@ -132,7 +134,7 @@
 
         checkAllSubmitBtn.on('submit', function (e) {
             var isSubmitable = !$(this).hasClass('disabled');
-            if(!isSubmitable) {
+            if (!isSubmitable) {
                 e.preventDefault();
             }
         })
@@ -147,8 +149,6 @@
         }
     })
 </script>
-
-
 
 
 

@@ -4,7 +4,8 @@ const { mutipleMongooseToObject } = require('../../util/mongoose');
 
 class SiteController {
     index(req, res, next) {
-        resident.find({})
+        resident
+            .find({})
             .then((residents) => {
                 res.render('home', {
                     residents: mutipleMongooseToObject(residents),

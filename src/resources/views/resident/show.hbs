@@ -1,0 +1,20 @@
+{{> header}}
+<div class="mt-3">
+    <h3>Thông tin thành viên trong số nhà: {{residents.address}}</h3>
+    <div class="row">
+        <div class="col-sm-6 col-lg-4">
+            <div class="card-deck">
+                <div class="card">
+                    <img class="card-img-top" src="{{residents.image}}" alt="{{residents.owner}}">
+                    <div class="card-body">
+                        <h5 class="card-title">Tên: {{residents.owner}}</h5>
+                        <p class="card-text">Sđt: {{residents.phone}}</p>
+                        <p class="card-text">Cư trú: {{residents.resident}}</p>
+                        <p class="card-text">Vaccine: {{residents.vaccine}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{> footer}}
